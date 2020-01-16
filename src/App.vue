@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
-    <router-view :key="$router.fullPath" />
-  </div>
+    <div id="app">
+        <router-view :key="$router.fullPath" />
+    </div>
 </template>
 
 <style lang="scss">
-  @import "style/global";
+@import 'style/global';
 </style>

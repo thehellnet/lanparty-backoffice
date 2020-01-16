@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
@@ -9,7 +9,7 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
