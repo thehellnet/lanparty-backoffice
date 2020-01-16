@@ -4,20 +4,43 @@ import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
-const routes = [
+const routes = routes: [
   {
     path: "/",
     name: "home",
-    component: Home
+    component: Home,
+    beforeEnter: async (to, from, next) => {
+      if (!tokenService.getToken()) {
+        logger.debug("no token in local storage");
+        next({ path: "/login" });
+      } else {
+        try {
+          const response = await httpClient.get("/isTokenValid");
+          logger.info("token is valid", response);
+          store.commit("auth/setAuthenticated", true);
+          next();
+        } catch (e) {
+          logger.info("token expired", e);
+          next({ path: "/login" });
+        }
+      }
+    }
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("./views/Login.vue")
   },
   {
     path: "/about",
     name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    component: () => import("./views/About.vue")
+  },
+  {
+    path: "/entity/:entity",
+    name: "entity",
+    props: true,
+    component: () => import("./views/Entity.vue")
   }
 ];
 

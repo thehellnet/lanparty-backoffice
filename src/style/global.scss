@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.theme-default {
+  --color-primary: #07889b;
+  --color-primary-light: #54b8cc;
+  --color-primary-light: #005b6d;
+  --color-secondary: #e37222;
+  --color-secondary-light: #ffa252;
+  --color-secondary-dark: #ab4400;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #000000;
+  --color-error: #f56565;
+  --color-background: #edf2f7;
+  --color-background-dark: #cbd5e0;
+  --color-background-light: #ffffff;
+}
