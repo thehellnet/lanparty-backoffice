@@ -14,7 +14,7 @@
     </button>
 </template>
 
-<script>
+<script lang="ts">
 import { Vue, Prop } from 'vue-property-decorator'
 import Component from 'vue-class-component'
 

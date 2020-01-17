@@ -26,7 +26,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import BaseInput from './Base/BaseInput'
 import BaseButton from './Base/BaseButton'
 import logger from '../services/app-logger/app-logger.service'

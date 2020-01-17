@@ -5,7 +5,7 @@
     </the-layout>
 </template>
 
-<script>
+<script lang="ts">
 import TheLayout from '../layouts/TheLayout'
 import EntityTable from '../../components/Entity/EntityTable'
 import EntityForm from '../../components/Entity/EntityForm'

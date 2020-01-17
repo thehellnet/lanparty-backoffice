@@ -51,7 +51,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import logger from '../../services/app-logger/app-logger.service'
 import { entityService } from '../../services/entity.service'
 import BaseIconButton from '../Base/BaseIconButton'

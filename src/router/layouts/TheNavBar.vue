@@ -35,7 +35,7 @@
     </nav>
 </template>
 
-<script>
+<script lang="ts">
 import BaseIconButton from '../../components/Base/BaseIconButton'
 import Component from 'vue-class-component'
 import { Vue } from 'vue-property-decorator'

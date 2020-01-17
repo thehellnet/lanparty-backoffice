@@ -21,7 +21,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { entityService } from '../../services/entity.service'
 import { Prop, Vue } from 'vue-property-decorator'
 import Component from 'vue-class-component'

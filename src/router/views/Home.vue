@@ -4,7 +4,7 @@
     </the-layout>
 </template>
 
-<script>
+<script lang="ts">
 import TheLayout from '../layouts/TheLayout'
 import Component from 'vue-class-component'
 import { Vue } from 'vue-property-decorator'
