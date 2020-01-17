@@ -53,10 +53,10 @@
 
 <script lang="ts">
 import logger from '../../services/app-logger/app-logger.service'
-import { entityService } from '../../services/entity.service'
-import BaseIconButton from '../Base/BaseIconButton'
+import { entityService } from '@/services/entity.service'
 import { Prop, Vue } from 'vue-property-decorator'
 import Component from 'vue-class-component'
+import BaseIconButton from '@/components/Base/BaseIconButton.vue'
 
 @Component({
     components: { BaseIconButton },

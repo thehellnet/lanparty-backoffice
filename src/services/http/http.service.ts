@@ -31,22 +31,22 @@ const getClient = (baseUrl: string) => {
     }
 
     const handleResponseError = error => {
-        store.commit('spinner/hide')
+        store.commit('SpinnerModule/hide')
         return Promise.reject(error)
     }
 
     const handleResponseSuccess = response => {
-        store.commit('spinner/hide')
+        store.commit('SpinnerModule/hide')
         return response
     }
 
     const showSpinnerInterceptor = data => {
-        store.commit('spinner/show')
+        store.commit('SpinnerModule/show')
         return data
     }
 
     const hideSpinnerInterceptor = data => {
-        store.commit('spinner/hide')
+        store.commit('SpinnerModule/hide')
         return data
     }
 

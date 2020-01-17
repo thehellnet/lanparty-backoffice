@@ -5,10 +5,10 @@
 </template>
 
 <script lang="ts">
-import TheLayout from '../layouts/TheLayout'
-import LoginForm from '../../components/LoginForm'
 import Component from 'vue-class-component'
 import { Vue } from 'vue-property-decorator'
+import TheLayout from '@/router/layouts/TheLayout.vue'
+import LoginForm from '@/components/LoginForm.vue'
 
 @Component({
     name: 'Login',

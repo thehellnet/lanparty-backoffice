@@ -1,18 +1,24 @@
 import Vuex from 'vuex'
+import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
 
-export default new Vuex.Store({
-    state: {
-        loading: false,
-    },
-    mutations: {
-        show(state) {
-            state.loading = true
-        },
-        hide(state) {
-            state.loading = false
-        },
-        toggle(state) {
-            state.loading = !state.loading
-        },
-    },
+@Module({
+    namespaced: true,
 })
+class SpinnerModule extends VuexModule {
+    public loading: boolean = false
+
+    @Mutation
+    show() {
+        this.loading = true
+    }
+    @Mutation
+    hide(state) {
+        this.loading = false
+    }
+    @Mutation
+    toggle(state) {
+        this.loading = !this.loading
+    }
+}
+
+export default SpinnerModule

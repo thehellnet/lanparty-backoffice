@@ -30,15 +30,19 @@
                 class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-primary hover:bg-white mt-4 lg:mt-0"
                 >Login</a
             >
-            <BaseIconButton v-else :icon="'user'"></BaseIconButton>
+            <BaseIconButton v-else icon="user"></BaseIconButton>
         </div>
     </nav>
 </template>
 
 <script lang="ts">
-import BaseIconButton from '../../components/Base/BaseIconButton'
 import Component from 'vue-class-component'
 import { Vue } from 'vue-property-decorator'
+import BaseIconButton from '@/components/Base/BaseIconButton.vue'
+
+import { namespace } from 'vuex-class'
+
+const authModule = namespace('AuthModule')
 
 @Component({
     name: 'TheNavBar',
@@ -52,9 +56,9 @@ export default class TheNavBar extends Vue {
     ]
     showMenu = false
 
-    get isAuthenticated() {
-        return this.$store.state.auth
-    }
+    @authModule.Getter
+    private isAuthenticated: () => boolean
+
     toggleMenu() {
         this.showMenu = !this.showMenu
     }

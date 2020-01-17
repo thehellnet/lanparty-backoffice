@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { entityService } from '../../services/entity.service'
+import { entityService } from '@/services/entity.service'
 import { Prop, Vue } from 'vue-property-decorator'
 import Component from 'vue-class-component'
 import logger from '../../services/app-logger/app-logger.service'

@@ -6,11 +6,11 @@
 </template>
 
 <script lang="ts">
-import TheLayout from '../layouts/TheLayout'
-import EntityTable from '../../components/Entity/EntityTable'
-import EntityForm from '../../components/Entity/EntityForm'
 import Component from 'vue-class-component'
 import { Prop, Vue } from 'vue-property-decorator'
+import EntityForm from '@/components/Entity/EntityForm.vue'
+import TheLayout from '@/router/layouts/TheLayout.vue'
+import EntityTable from '@/components/Entity/EntityTable.vue'
 
 @Component({
     name: 'Entity',

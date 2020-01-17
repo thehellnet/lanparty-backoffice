@@ -6,9 +6,9 @@
     </the-layout>
 </template>
 <script lang="ts">
-import TheLayout from '../layouts/TheLayout'
 import { Vue } from 'vue-property-decorator'
 import Component from 'vue-class-component'
+import TheLayout from '@/router/layouts/TheLayout.vue'
 
 @Component({
     name: 'About',

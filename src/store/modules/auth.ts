@@ -1,35 +1,43 @@
 import httpClient from '../../services/http/http.service'
 import tokenService from '../../services/token.service'
-import Vuex from 'vuex'
+import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 
-export default new Vuex.Store({
-    state: {
-        user: null,
-        authenticated: false,
-    },
-    mutations: {
-        setUser(state, user) {
-            state.user = user
-        },
-        setAuthenticated(state, authenticated) {
-            state.authenticated = authenticated
-        },
-    },
-    getters: {
-        isAuthenticated(state) {
-            return state.authenticated
-        },
-    },
-    actions: {
-        doLogin(state, user) {
-            return httpClient.post('/login', user, { auth: false }).then(res => {
-                tokenService.setToken(res.data.token)
-                state.commit('setAuthenticated', true)
-            })
-        },
-        doLogout(context) {
-            tokenService.clearToken()
-            context.commit('setAuthenticated', true)
-        },
-    },
+@Module({
+    namespaced: true,
 })
+class AuthModule extends VuexModule {
+    public user: any = null
+    public authenticated: boolean = false
+
+    @Mutation
+    setUser(user) {
+        this.user = user
+    }
+    @Mutation
+    setAuthenticated(authenticated) {
+        this.authenticated = authenticated
+    }
+
+    get isAuthenticated() {
+        return this.authenticated
+    }
+
+    @Action({ commit: 'setAuthenticated' })
+    async doLogin(user) {
+        try {
+            const response = await httpClient.post('/user/login', user, { auth: false })
+            tokenService.setToken(response.data.token)
+        } catch (e) {
+            return false
+        }
+        return true
+    }
+
+    @Action({ commit: 'setAuthenticated' })
+    doLogout() {
+        tokenService.clearToken()
+        return false
+    }
+}
+
+export default AuthModule

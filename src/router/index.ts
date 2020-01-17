@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { Vue } from 'vue-property-decorator'
 import VueRouter from 'vue-router'
 import Home from '@/router/views/Home.vue'
 import tokenService from '@/services/token.service'
@@ -18,7 +18,7 @@ const routes = [
                 next({ path: '/login' })
             } else {
                 try {
-                    const response = await httpClient.get('/isTokenValid')
+                    const response = await httpClient.get('/user/isTokenValid')
                     logger.info('token is valid', response)
                     // store.commit('auth/setAuthenticated', true)
                     next()

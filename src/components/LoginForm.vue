@@ -10,7 +10,7 @@
                 v-model="user.email"
                 @focus="clearStatus"
                 @keypress="clearStatus"
-            ></base-input>
+            />
             <base-input
                 :id="'password'"
                 :label="'Password'"
@@ -20,18 +20,21 @@
                 v-model="user.password"
                 @focus="clearStatus"
                 @keypress="clearStatus"
-            ></base-input>
-            <base-button :text="'LogIn'" :type="'submit'"></base-button>
+            />
+            <base-button :text="'LogIn'" :type="'submit'" />
         </form>
     </div>
 </template>
 
 <script lang="ts">
-import BaseInput from './Base/BaseInput'
-import BaseButton from './Base/BaseButton'
 import logger from '../services/app-logger/app-logger.service'
 import { Vue } from 'vue-property-decorator'
 import Component from 'vue-class-component'
+import BaseInput from '@/components/Base/BaseInput.vue'
+import BaseButton from '@/components/Base/BaseButton.vue'
+import { namespace } from 'vuex-class'
+
+const authModule = namespace('AuthModule')
 
 @Component({ components: { BaseButton, BaseInput } })
 export default class LoginForm extends Vue {
@@ -43,6 +46,9 @@ export default class LoginForm extends Vue {
         password: '',
     }
 
+    @authModule.Action
+    private doLogin: (user: any) => Promise<boolean>
+
     handleSubmit() {
         this.submitting = true
         this.clearStatus()
@@ -52,8 +58,7 @@ export default class LoginForm extends Vue {
             return
         }
 
-        this.$store
-            .dispatch('auth/doLogin', this.user)
+        this.doLogin(this.user)
             .then(() => {
                 this.$router.replace('/')
             })
@@ -67,7 +72,7 @@ export default class LoginForm extends Vue {
         this.error = false
     }
     get invalidEmail() {
-        return this.user.username === ''
+        return this.user.email === ''
     }
 
     get invalidPassword() {

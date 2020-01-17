@@ -12,24 +12,24 @@
 </template>
 
 <script lang="ts">
-import TheNavBar from './TheNavBar'
-import TheFooter from './TheFooter'
-import BaseSpinner from '../../components/Base/BaseSpinner'
 import { mapState } from 'vuex'
-import BaseSpinnerContainer from '../../components/Base/BaseSpinnerContainer'
 import Component from 'vue-class-component'
 import { Vue } from 'vue-property-decorator'
+import BaseSpinnerContainer from '@/components/Base/BaseSpinnerContainer.vue'
+import BaseSpinner from '@/components/Base/BaseSpinner.vue'
+import TheFooter from '@/router/layouts/TheFooter.vue'
+import TheNavBar from '@/router/layouts/TheNavBar.vue'
+import { namespace } from 'vuex-class'
 
+const spinnerModule = namespace('SpinnerModule')
 @Component({
     name: 'TheLayout',
     components: { BaseSpinnerContainer, BaseSpinner, TheFooter, TheNavBar },
-    computed: {
-        ...mapState({
-            loading: state => state.spinner.loading,
-        }),
-    },
 })
-export default class TheLayout extends Vue {}
+export default class TheLayout extends Vue {
+    @spinnerModule.State
+    private loading
+}
 </script>
 
 <style scoped></style>
