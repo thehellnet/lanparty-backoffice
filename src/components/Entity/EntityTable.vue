@@ -74,9 +74,10 @@ import BaseIconButton from '@/components/Base/BaseIconButton.vue'
 })
 export default class EntityTable extends Vue {
     @Prop(String) entity: string
-    entityList = { type: Object, default: [] }
-    entityTableConfig = { type: Object, default: {} }
-    entityService = entityService[this.entity]
+    @Prop({ type: Array, default: [] }) entityList
+    @Prop({ type: Object, default: {} }) entityTableConfig
+
+    private entityService = entityService[this.entity]
 
     created() {
         logger.debug(this.entity)
