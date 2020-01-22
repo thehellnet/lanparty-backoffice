@@ -32,6 +32,7 @@ module.exports = {
     },
     variants: {
         boxShadow: ['responsive'],
+        tableLayout: ['responsive', 'hover', 'focus'],
     },
     plugins: [],
     corePlugins: {

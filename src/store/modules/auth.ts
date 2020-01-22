@@ -25,7 +25,7 @@ class AuthModule extends VuexModule {
     @Action({ commit: 'setAuthenticated' })
     async doLogin(user) {
         try {
-            const response = await httpClient.post('/user/login', user, { auth: false })
+            const response = await httpClient.post('/v1/auth/login', user, { auth: false })
             tokenService.setToken(response.data.token)
         } catch (e) {
             return false

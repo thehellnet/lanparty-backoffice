@@ -6,17 +6,17 @@
         <table v-else class="table-auto">
             <caption>
                 {{
-                    entityTableConfig.label
+                    entityTableConfig.title
                 }}
             </caption>
             <thead>
                 <tr>
                     <th
                         class="py-4 px-6 bg-background-light font-bold uppercase text-sm text-text-secondary border-b border-background-dark"
-                        v-for="configField in entityTableConfig.fields"
-                        :key="configField.name"
+                        v-for="(value, key) in entityTableConfig.properties"
+                        :key="key"
                     >
-                        {{ configField.name }}
+                        {{ value.title }}
                     </th>
                     <th
                         class="py-4 px-6 bg-background-light font-bold uppercase text-sm text-text-secondary border-b border-background-dark"
@@ -34,12 +34,12 @@
                     v-for="(entity, index) in entityList"
                     :key="entity.id"
                 >
-                    <td v-for="configField in entityTableConfig.fields" :key="configField.name">
-                        <div v-if="configField.type === 'list'">
-                            {{ entity[configField.name] | printArray }}
+                    <td v-for="(value, key) in entityTableConfig.properties" :key="key">
+                        <div v-if="value.type === 'string' && value.format === 'uri'">
+                            {{ loadRelated(entity.id, key) }}
                         </div>
                         <div v-else>
-                            {{ entity[configField.name] }}
+                            {{ entity[key] }}
                         </div>
                     </td>
                     <td class="text-center">
@@ -53,10 +53,10 @@
 
 <script lang="ts">
 import logger from '../../services/app-logger/app-logger.service'
-import { entityService } from '@/services/entity.service'
 import { Prop, Vue } from 'vue-property-decorator'
 import Component from 'vue-class-component'
 import BaseIconButton from '@/components/Base/BaseIconButton.vue'
+import restService, { EntitySchema } from '@/services/http/rest.service'
 
 @Component({
     components: { BaseIconButton },
@@ -74,21 +74,23 @@ import BaseIconButton from '@/components/Base/BaseIconButton.vue'
 })
 export default class EntityTable extends Vue {
     @Prop(String) entity: string
-    @Prop({ type: Array, default: [] }) entityList
-    @Prop({ type: Object, default: {} }) entityTableConfig
-
-    private entityService = entityService[this.entity]
+    private entityList = []
+    private related: any = {}
+    private entityTableConfig: EntitySchema
 
     created() {
         logger.debug(this.entity)
-        Promise.all([this.entityService.getAll(), this.entityService.config()])
+        Promise.all([restService.getAll(this.entity), restService.entitySchema(this.entity)])
             .then(response => {
-                this.entityList = response[0].data
-                this.entityTableConfig = response[1].data
+                this.entityList = response[0]
+                this.entityTableConfig = response[1]
             })
             .catch(err => {
                 logger.error(err)
             })
+    }
+    async loadRelated(id, related) {
+        return await restService.lazyLoad(this.entity, id, related)
     }
 }
 </script>

@@ -22,10 +22,9 @@
 </template>
 
 <script lang="ts">
-import { entityService } from '@/services/entity.service'
 import { Prop, Vue } from 'vue-property-decorator'
 import Component from 'vue-class-component'
-import logger from '../../services/app-logger/app-logger.service'
+import logger from '@/services/app-logger/app-logger.service'
 @Component
 export default class EntityForm extends Vue {
     @Prop(String) entityName: string
@@ -38,18 +37,9 @@ export default class EntityForm extends Vue {
     entityTableConfig = {
         type: Object,
     }
-    entityService = entityService[this.entityName]
 
     created() {
         logger.debug(this.entity)
-        this.entityService
-            .config()
-            .then(response => {
-                this.entityTableConfig = response.data
-            })
-            .catch(err => {
-                logger.error(err)
-            })
     }
 
     handleSubmit() {}

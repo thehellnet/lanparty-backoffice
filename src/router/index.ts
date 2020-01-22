@@ -4,6 +4,7 @@ import Home from '@/router/views/Home.vue'
 import tokenService from '@/services/token.service'
 import logger from '@/services/app-logger/app-logger.service'
 import httpClient from '@/services/http/http.service'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -18,9 +19,9 @@ const routes = [
                 next({ path: '/login' })
             } else {
                 try {
-                    const response = await httpClient.get('/user/isTokenValid')
+                    const response = await httpClient.get('/v1/auth/isTokenValid')
                     logger.info('token is valid', response)
-                    // store.commit('auth/setAuthenticated', true)
+                    store.commit('AuthModule/setAuthenticated', true)
                     next()
                 } catch (e) {
                     logger.info('token expired', e)
