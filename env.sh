@@ -11,5 +11,5 @@ if [ -f /lbin/env-sanitize ]; then
 fi
 
 PROMPT_TAG="LanParty Backoffice"
-PS1="\e[1m[\e[33m${PROMPT_TAG}\e[39m]\e[21m ${PS1}"
+PS1="\001\e[1m\002[\001\e[33m\002${PROMPT_TAG}\001\e[39m\002]\001\e[21m\002 ${PS1}"
 export PS1
