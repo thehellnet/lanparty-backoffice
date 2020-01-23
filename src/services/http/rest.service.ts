@@ -38,6 +38,12 @@ class RestService {
             })
     }
 
+    entityConfig(entity: string): Promise<EntitySchema> {
+        return httpClient.get(`/v1/config/metadata/${entity}s`).then(response => {
+            return response.data
+        })
+    }
+
     lazyLoad(entity, id, related) {
         return httpClient.get(`/rest/${entity}s/${id}/${related}`)
     }

@@ -13,10 +13,10 @@
                 <tr>
                     <th
                         class="py-4 px-6 bg-background-light font-bold uppercase text-sm text-text-secondary border-b border-background-dark"
-                        v-for="(value, key) in entityTableConfig.properties"
-                        :key="key"
+                        v-for="field in entityTableConfig.fields"
+                        :key="field.name"
                     >
-                        {{ value.title }}
+                        {{ field.title }}
                     </th>
                     <th
                         class="py-4 px-6 bg-background-light font-bold uppercase text-sm text-text-secondary border-b border-background-dark"
@@ -34,16 +34,16 @@
                     v-for="(entity, index) in entityList"
                     :key="entity.id"
                 >
-                    <td class="text-center" v-for="(value, key) in entityTableConfig.properties" :key="key">
-                        <div v-if="!entity[key] && value.format === 'uri'">
+                    <td class="text-center" v-for="field in entityTableConfig.fields" :key="field.name">
+                        <div v-if="!entity[field.name] && field.type.match(/(One|Many)To(One|Many)/)">
                             <base-button
                                 class="bg-primary-light"
-                                @click="loadRelated(entity, key)"
+                                @click="loadRelated(entity, field.name)"
                                 :text="'Show'"
                             ></base-button>
                         </div>
                         <div v-else>
-                            {{ entity[key] }}
+                            {{ entity[field.name] }}
                         </div>
                     </td>
                     <td class="text-center">
@@ -85,7 +85,7 @@ export default class EntityTable extends Vue {
 
     created() {
         logger.debug(this.entity)
-        Promise.all([restService.getAll(this.entity), restService.entitySchema(this.entity)])
+        Promise.all([restService.getAll(this.entity), restService.entityConfig(this.entity)])
             .then(response => {
                 this.entityList = response[0]
                 this.entityTableConfig = response[1]
