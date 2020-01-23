@@ -1,5 +1,4 @@
 import httpClient from './http.service'
-import logger from '@/services/app-logger/app-logger.service'
 
 class RestService {
     constructor() {}
@@ -52,6 +51,7 @@ class RestService {
         return httpClient.get(`/rest/profile`, { headers: { 'content-type': 'application/alps+json' } })
     }
 }
+
 const restService = new RestService()
 
 export default restService
@@ -64,8 +64,17 @@ class EntitySchemaProp {
 }
 
 export class EntitySchema {
+    name: string
     title: string
-    properties: { [key: string]: EntitySchemaProp }
-    definitions: any
+    fields: FieldSchema[]
+}
+
+export class FieldSchema {
+    name: string
+    title: string
     type: string
+    class: string
+    nullable: boolean
+    unique: boolean
+    hidden: boolean
 }

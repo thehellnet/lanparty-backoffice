@@ -13,7 +13,7 @@
                 <tr>
                     <th
                         class="py-4 px-6 bg-background-light font-bold uppercase text-sm text-text-secondary border-b border-background-dark"
-                        v-for="field in entityTableConfig.fields"
+                        v-for="field in entityFields"
                         :key="field.name"
                     >
                         {{ field.title }}
@@ -60,7 +60,7 @@ import logger from '../../services/app-logger/app-logger.service'
 import { Prop, Vue } from 'vue-property-decorator'
 import Component from 'vue-class-component'
 import BaseIconButton from '@/components/Base/BaseIconButton.vue'
-import restService, { EntitySchema } from '@/services/http/rest.service'
+import restService, { EntitySchema, FieldSchema } from '@/services/http/rest.service'
 import BaseButton from '@/components/Base/BaseButton.vue'
 
 @Component({
@@ -82,6 +82,7 @@ export default class EntityTable extends Vue {
     private entityList = []
     private related: any = {}
     private entityTableConfig: EntitySchema
+    private entityFields: FieldSchema[]
 
     created() {
         logger.debug(this.entity)
@@ -89,6 +90,7 @@ export default class EntityTable extends Vue {
             .then(response => {
                 this.entityList = response[0]
                 this.entityTableConfig = response[1]
+                this.entityFields = this.entityTableConfig.fields.filter(value => !value.hidden)
             })
             .catch(err => {
                 logger.error(err)
