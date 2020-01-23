@@ -15,7 +15,7 @@ import { Prop, Vue } from 'vue-property-decorator'
 @Component
 export default class BaseSpinner extends Vue {
     @Prop({ type: Boolean, default: true }) loading: boolean
-    @Prop({ type: String, default: '#5dc596' }) color: string
+    @Prop({ type: String, default: 'var(--color-primary)' }) color: string
     @Prop({ type: String, default: '35px' }) height: string
     @Prop({ type: String, default: '4px' }) width: string
     @Prop({ type: String, default: '2px' }) margin: string

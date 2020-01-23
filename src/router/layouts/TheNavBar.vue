@@ -24,13 +24,13 @@
             >
                 {{ nav.title }}
             </router-link>
-            <a
-                v-if="!this.isAuthenticated"
-                href="/login"
-                class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-primary hover:bg-white mt-4 lg:mt-0"
-                >Login</a
-            >
-            <BaseIconButton v-else icon="user"></BaseIconButton>
+<!--            <a-->
+<!--                v-if="!this.isAuthenticated"-->
+<!--                href="/login"-->
+<!--                class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-primary hover:bg-white mt-4 lg:mt-0"-->
+<!--                >Login</a-->
+<!--            >-->
+            <BaseIconButton  v-if="this.isAuthenticated" icon="user"></BaseIconButton>
         </div>
     </nav>
 </template>

@@ -4,7 +4,7 @@
             No entity in list
         </p>
         <table v-else class="table-auto">
-            <caption>
+            <caption class="text-2xl">
                 {{
                     entityTableConfig.title
                 }}
@@ -34,9 +34,13 @@
                     v-for="(entity, index) in entityList"
                     :key="entity.id"
                 >
-                    <td v-for="(value, key) in entityTableConfig.properties" :key="key">
-                        <div v-if="value.type === 'string' && value.format === 'uri'">
-                            {{ loadRelated(entity.id, key) }}
+                    <td class="text-center" v-for="(value, key) in entityTableConfig.properties" :key="key">
+                        <div v-if="!entity[key] && value.format === 'uri'">
+                            <base-button
+                                class="bg-primary-light"
+                                @click="loadRelated(entity, key)"
+                                :text="'Show'"
+                            ></base-button>
                         </div>
                         <div v-else>
                             {{ entity[key] }}
@@ -57,9 +61,10 @@ import { Prop, Vue } from 'vue-property-decorator'
 import Component from 'vue-class-component'
 import BaseIconButton from '@/components/Base/BaseIconButton.vue'
 import restService, { EntitySchema } from '@/services/http/rest.service'
+import BaseButton from '@/components/Base/BaseButton.vue'
 
 @Component({
-    components: { BaseIconButton },
+    components: { BaseButton, BaseIconButton },
     filters: {
         printArray(array) {
             if (!array) return ''
@@ -89,8 +94,11 @@ export default class EntityTable extends Vue {
                 logger.error(err)
             })
     }
-    async loadRelated(id, related) {
-        return await restService.lazyLoad(this.entity, id, related)
+    async loadRelated(entity, related) {
+        return await restService.lazyLoad(this.entity, entity.id, related).then(response => {
+            const relatedEntities = response.data._embedded[related]
+            this.$set(entity, related, response.data._embedded[related])
+        })
     }
 }
 </script>

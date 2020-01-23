@@ -1,6 +1,6 @@
 <template>
     <button
-        class="bg-secondary hover:bg-secondary-dark disabled:bg-secondary-light text-text-primary font-bold py-2 px-4 rounded focus:border-secondary focus:outline-none focus:shadow-outline"
+        class="bg-secondary hover:bg-secondary-dark disabled:bg-secondary-light text-text-primary font-bold py-2 px-4 w-100 rounded focus:border-secondary focus:outline-none focus:shadow-outline"
         :class="[
             { 'cursor-not-allowed': disabled },
             { 'bg-button-disabled': disabled },
@@ -22,7 +22,7 @@ import Component from 'vue-class-component'
 export default class BaseButton extends Vue {
     @Prop(Boolean) disabled: boolean
     @Prop(String) text: string
-    @Prop(String) type: boolean
+    @Prop(String) type: string
 }
 </script>
 
