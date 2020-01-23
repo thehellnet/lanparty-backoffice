@@ -34,7 +34,7 @@
                     v-for="(entity, index) in entityList"
                     :key="entity.id"
                 >
-                    <td class="text-center" v-for="field in entityTableConfig.fields" :key="field.name">
+                    <td class="text-center" v-for="field in entityFields" :key="field.name">
                         <div v-if="!entity[field.name] && field.type.match(/(One|Many)To(One|Many)/)">
                             <base-button
                                 class="bg-primary-light"
