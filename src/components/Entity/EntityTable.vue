@@ -96,8 +96,8 @@ export default class EntityTable extends Vue {
     }
     async loadRelated(entity, related) {
         return await restService.lazyLoad(this.entity, entity.id, related).then(response => {
-            const relatedEntities = response.data._embedded[related]
-            this.$set(entity, related, response.data._embedded[related])
+            const relatedEntities = response.data._embedded[related].map(obj => obj.friendlyName)
+            this.$set(entity, related, relatedEntities)
         })
     }
 }
