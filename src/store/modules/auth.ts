@@ -1,5 +1,5 @@
 import httpClient from '../../services/http/http.service'
-import tokenService from '../../services/token.service'
+import tokenService from '../../services/auth/token.service'
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 
 @Module({

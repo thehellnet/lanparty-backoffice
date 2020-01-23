@@ -33,6 +33,11 @@ module.exports = {
     variants: {
         boxShadow: ['responsive'],
         tableLayout: ['responsive', 'hover', 'focus'],
+        flex: ['responsive'],
+        flexDirection: ['responsive'],
+        flexGrow: ['responsive'],
+        flexShrink: ['responsive'],
+        flexWrap: ['responsive'],
     },
     plugins: [],
     corePlugins: {

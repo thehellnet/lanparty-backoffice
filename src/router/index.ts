@@ -1,7 +1,7 @@
 import { Vue } from 'vue-property-decorator'
 import VueRouter from 'vue-router'
 import Home from '@/router/views/Home.vue'
-import tokenService from '@/services/token.service'
+import tokenService from '@/services/auth/token.service'
 import logger from '@/services/app-logger/app-logger.service'
 import httpClient from '@/services/http/http.service'
 import store from '@/store'

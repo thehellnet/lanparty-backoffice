@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import store from '../../store'
 
-import tokenService from '../token.service'
+import tokenService from '../auth/token.service'
 
 const getClient = (baseUrl: string) => {
     const config: AxiosRequestConfig = {
