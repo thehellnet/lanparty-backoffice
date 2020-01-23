@@ -1,15 +1,11 @@
 <template>
     <div class="relative">
-        <button
-            @click="isOpen = !isOpen"
-            class="relative z-10 block h-8 w-8 rounded-full overflow-hidden border-2 border-gray-600 focus:outline-none focus:border-white"
-        >
-            <img
-                class="h-full w-full object-cover"
-                src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80"
-                alt="Your avatar"
-            />
-        </button>
+        <div v-if="buttonProp.type === 'icon'">
+            <base-icon-button :icon="buttonProp.icon" @click="isOpen = !isOpen"></base-icon-button>
+        </div>
+        <div v-else>
+            <base-button :text="buttonProp.text"></base-button>
+        </div>
         <button
             v-if="isOpen"
             @click="isOpen = false"
@@ -17,27 +13,39 @@
             class="fixed inset-0 h-full w-full bg-black opacity-50 cursor-default"
         ></button>
         <div v-if="isOpen" class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl">
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white">Account settings</a>
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white">Support</a>
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white">Sign out</a>
+            <a
+                v-for="menuItem in menuItems"
+                :key="menuItem.title"
+                @click="menuItem.action()"
+                href="#"
+                class="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white"
+                >{{ menuItem.title }}</a
+            >
         </div>
     </div>
 </template>
 
-<script>
-    import {Prop, Vue} from 'vue-property-decorator'
+<script lang="ts">
+import { Prop, Vue } from 'vue-property-decorator'
 import Component from 'vue-class-component'
+import BaseButton from '@/components/Base/BaseButton.vue'
+import BaseIconButton from '@/components/Base/BaseIconButton.vue'
 
 @Component({
     name: 'BaseDropDownMenu',
+    components: { BaseIconButton, BaseButton },
 })
 export default class BaseDropDownMenu extends Vue {
-    @Prop({type:Array, default: []}) menuList
-
-    private isOpen: boolean = false
+    @Prop({ type: Array, default: [] }) menuItems
+    @Prop({ type: Boolean, default: false }) isOpen
+    @Prop({ type: Object, default: { type: 'icon', icon: 'bars' } }) buttonProp: {
+        type: string
+        text?: string
+        icon?: string
+    }
 
     created() {
-        const handleEscape = (e) => {
+        const handleEscape = e => {
             if (e.key === 'Esc' || e.key === 'Escape') {
                 this.isOpen = false
             }
@@ -47,7 +55,6 @@ export default class BaseDropDownMenu extends Vue {
             document.removeEventListener('keydown', handleEscape)
         })
     }
-
 }
 </script>
 
