@@ -11,13 +11,15 @@
             </caption>
             <thead>
                 <tr>
-                    <th
-                        class="py-4 px-6 bg-background-light font-bold uppercase text-sm text-text-secondary border-b border-background-dark"
-                        v-for="field in entityFields"
-                        :key="field.name"
-                    >
-                        {{ field.title }}
-                    </th>
+                    <template v-for="field in entityTableConfig.fields">
+                        <th
+                            v-if="!field.hidden"
+                            class="py-4 px-6 bg-background-light font-bold uppercase text-sm text-text-secondary border-b border-background-dark"
+                            :key="field.name"
+                        >
+                            {{ field.title }}
+                        </th>
+                    </template>
                     <th
                         class="py-4 px-6 bg-background-light font-bold uppercase text-sm text-text-secondary border-b border-background-dark"
                     >
@@ -34,18 +36,20 @@
                     v-for="(entity, index) in entityList"
                     :key="entity.id"
                 >
-                    <td class="text-center" v-for="field in entityFields" :key="field.name">
-                        <div v-if="!entity[field.name] && field.type.match(/(One|Many)To(One|Many)/)">
-                            <base-button
-                                class="bg-primary-light"
-                                @click="loadRelated(entity, field.name)"
-                                :text="'Show'"
-                            ></base-button>
-                        </div>
-                        <div v-else>
-                            {{ entity[field.name] }}
-                        </div>
-                    </td>
+                    <template v-for="field in entityTableConfig.fields">
+                        <td v-if="!field.hidden" class="text-center" :key="field.name">
+                            <div v-if="!entity[field.name] && field.type.match(/(One|Many)To(One|Many)/)">
+                                <base-button
+                                    class="bg-primary-light"
+                                    @click="loadRelated(entity, field.name)"
+                                    :text="'Show'"
+                                ></base-button>
+                            </div>
+                            <div v-else>
+                                {{ entity[field.name] }}
+                            </div>
+                        </td>
+                    </template>
                     <td class="text-center">
                         <base-icon-button :icon="'edit'" class="text-text-secondary"></base-icon-button>
                     </td>
@@ -82,7 +86,6 @@ export default class EntityTable extends Vue {
     private entityList = []
     private related: any = {}
     private entityTableConfig: EntitySchema
-    private entityFields: FieldSchema[]
 
     created() {
         logger.debug(this.entity)
@@ -90,7 +93,6 @@ export default class EntityTable extends Vue {
             .then(response => {
                 this.entityList = response[0]
                 this.entityTableConfig = response[1]
-                this.entityFields = this.entityTableConfig.fields.filter(value => !value.hidden)
             })
             .catch(err => {
                 logger.error(err)

@@ -29,7 +29,7 @@ class RestService {
         return httpClient.get(`/rest/profile/${entity}s`, { headers: { 'content-type': 'application/alps+json' } })
     }
 
-    entitySchema(entity: string): Promise<EntitySchema> {
+    entitySchema(entity: string): Promise<EntitySchemaProp> {
         return httpClient
             .get(`/rest/profile/${entity}s`, { headers: { accept: 'application/schema+json' } })
             .then(response => {
@@ -56,20 +56,20 @@ const restService = new RestService()
 
 export default restService
 
-class EntitySchemaProp {
+export interface EntitySchemaProp {
     title: string
     readOnly: boolean
     type: string
     format?: string
 }
 
-export class EntitySchema {
+export interface EntitySchema {
     name: string
     title: string
     fields: FieldSchema[]
 }
 
-export class FieldSchema {
+export interface FieldSchema {
     name: string
     title: string
     type: string
