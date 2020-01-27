@@ -3,9 +3,12 @@ import httpClient from './http.service'
 class RestService {
     constructor() {}
 
-    getAll(entity: string, page?, size?, sort?) {
-        return httpClient.get(`/rest/${entity}s`).then(response => {
-            return response.data._embedded[`${entity}s`]
+    getAll(entity: string, queryParams?: { page: string; size: string; sort: string }) {
+        return httpClient.get(`/rest/${entity}s${composeQueryParams(queryParams)}`).then(response => {
+            return {
+                [`${entity}s`]: response.data._embedded[`${entity}s`],
+                page: response.data.page,
+            }
         })
     }
 
@@ -52,6 +55,13 @@ class RestService {
     }
 }
 
+function composeQueryParams(params) {
+    return (!params || Object.entries(params).length === 0)
+        ? ``
+        : `?${Object.entries(params)
+              .map(([key, val]) =>`${key}=${val}`)
+              .join('&')}`
+}
 const restService = new RestService()
 
 export default restService

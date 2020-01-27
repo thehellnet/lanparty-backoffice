@@ -38,12 +38,13 @@
                 >
                     <template v-for="field in entityTableConfig.fields">
                         <td v-if="!field.hidden" class="text-center" :key="field.name">
-                            <div v-if="!entity[field.name] && field.type.match(/(One|Many)To(One|Many)/)">
+                            <div v-if="field.type.match(/(One|Many)To(One|Many)/)">
                                 <base-button
                                     class="bg-primary-light"
-                                    @click="loadRelated(entity, field.name)"
-                                    :text="'Show'"
+                                    @click="toggleRelated(entity, field.name)"
+                                    :text="!!entity[field.name] ? 'Hide' : 'Show'"
                                 ></base-button>
+                                <data v-if="entity[field.name]" v-html="entity[field.name]"></data>
                             </div>
                             <div v-else>
                                 {{ entity[field.name] }}
@@ -55,6 +56,22 @@
                     </td>
                 </tr>
             </tbody>
+            <tfoot
+                class="py-4 px-6 bg-background-light font-bold text-sm text-text-secondary border-t border-background-dark"
+            >
+                <div class="">
+                    {{ `Showing x of y` }}
+                </div>
+                <div>
+                    <button
+                        v-for="index in entityTablePages.totalPages"
+                        :key="index"
+                        @click="setTableData(entity, { page: index - 1, size: entityTablePages.size })"
+                    >
+                        {{ index }}
+                    </button>
+                </div>
+            </tfoot>
         </table>
     </div>
 </template>
@@ -69,40 +86,41 @@ import BaseButton from '@/components/Base/BaseButton.vue'
 
 @Component({
     components: { BaseButton, BaseIconButton },
-    filters: {
-        printArray(array) {
-            if (!array) return ''
-            let result = ''
-            const separator = ' - '
-            for (let item of array) {
-                result += item + separator
-            }
-            return result.replace(new RegExp(separator + '$'), '')
-        },
-    },
 })
 export default class EntityTable extends Vue {
     @Prop(String) entity: string
     private entityList = []
-    private related: any = {}
+    private entityTablePages = {}
     private entityTableConfig: EntitySchema
 
-    created() {
-        logger.debug(this.entity)
-        Promise.all([restService.getAll(this.entity), restService.entityConfig(this.entity)])
-            .then(response => {
-                this.entityList = response[0]
-                this.entityTableConfig = response[1]
-            })
-            .catch(err => {
-                logger.error(err)
-            })
+    async created() {
+        this.entityTableConfig = await restService.entityConfig(this.entity)
+        await this.setTableData(this.entity, { size: 10 })
     }
-    async loadRelated(entity, related) {
-        return await restService.lazyLoad(this.entity, entity.id, related).then(response => {
-            const relatedEntities = response.data._embedded[related].map(obj => obj.friendlyName)
-            this.$set(entity, related, relatedEntities)
-        })
+    async toggleRelated(entity, related) {
+        if (!entity[related]) {
+            await restService.lazyLoad(this.entity, entity.id, related).then(response => {
+                const relatedEntities = response.data._embedded[related].map(obj => obj.friendlyName)
+                this.$set(entity, related, this.arrayToHtmlList(relatedEntities))
+            })
+        } else {
+            this.$set(entity, related, '')
+        }
+    }
+
+    async setTableData(entity, params?) {
+        const data = await restService.getAll(this.entity, params)
+        this.entityTablePages = data.page
+        this.entityList = data[`${this.entity}s`]
+    }
+
+    arrayToHtmlList(array) {
+        if (!array || array.length === 0) return ''
+        let result = '<ul class="list-none text-left">'
+        for (let item of array) {
+            result += `<li>${item}</li>`
+        }
+        return (result += '</ul>')
     }
 }
 </script>
