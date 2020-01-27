@@ -36,6 +36,12 @@ const routes = [
         component: () => import('./views/Login.vue'),
     },
     {
+        path: '/confirm/:token?',
+        name: 'confirm',
+        props: true,
+        component: () => import('./views/Confirm.vue'),
+    },
+    {
         path: '/about',
         name: 'about',
         component: () => import('./views/About.vue'),

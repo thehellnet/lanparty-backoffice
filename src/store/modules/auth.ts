@@ -1,6 +1,7 @@
 import httpClient from '../../services/http/http.service'
 import tokenService from '../../services/auth/token.service'
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
+import logger from '@/services/app-logger/app-logger.service'
 
 @Module({
     namespaced: true,
@@ -13,6 +14,7 @@ class AuthModule extends VuexModule {
     setUser(user) {
         this.user = user
     }
+
     @Mutation
     setAuthenticated(authenticated) {
         this.authenticated = authenticated
@@ -37,6 +39,18 @@ class AuthModule extends VuexModule {
     doLogout() {
         tokenService.clearToken()
         return false
+    }
+
+    @Action
+    async doConfirm(data) {
+        logger.log(data)
+
+        try {
+            await httpClient.post('/v1/auth/confirm', data, { auth: false })
+            return true
+        } catch (e) {
+            return false
+        }
     }
 }
 
