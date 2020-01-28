@@ -23,7 +23,7 @@
                     @focus="clearStatus"
                     @keypress="clearStatus"
                 />
-                <base-button class="w-full" :text="'LogIn'" :type="'submit'" />
+                <base-button class="w-full" :text="'LogIn'" :type="'submit'" :color="'secondary'" />
                 <div class="mt-4">
                     <a href="#" class="text-primary text-xs">Forgot your password?</a>
                 </div>

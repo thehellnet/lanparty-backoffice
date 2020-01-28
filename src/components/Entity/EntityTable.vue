@@ -1,5 +1,5 @@
 <template>
-    <div id="entity-table">
+    <div id="entity-table" class="self-start">
         <p v-if="entityList.length < 1" class="empty-table">
             No entity in list
         </p>
@@ -40,7 +40,7 @@
                         <td v-if="!field.hidden" class="text-center" :key="field.name">
                             <div v-if="field.type.match(/(One|Many)To(One|Many)/)">
                                 <base-button
-                                    class="bg-primary-light"
+                                    :color="'primary'"
                                     @click="toggleRelated(entity, field.name)"
                                     :text="!!entity[field.name] ? 'Hide' : 'Show'"
                                 ></base-button>
@@ -56,21 +56,23 @@
                     </td>
                 </tr>
             </tbody>
-            <tfoot
-                class="py-4 px-6 bg-background-light font-bold text-sm text-text-secondary border-t border-background-dark"
-            >
-                <div class="">
-                    {{ `Showing x of y` }}
-                </div>
-                <div>
-                    <button
-                        v-for="index in entityTablePages.totalPages"
-                        :key="index"
-                        @click="setTableData(entity, { page: index - 1, size: entityTablePages.size })"
-                    >
-                        {{ index }}
-                    </button>
-                </div>
+            <tfoot class=" bg-background-light font-bold text-sm text-text-secondary border-t border-background-dark">
+                <tr>
+                    <td colspan="100%">
+                        <div class="flex justify-center align-center py-4 px-6">
+                            <base-button
+                                v-for="index in entityTablePages.totalPages"
+                                :key="index"
+                                @click="setTableData(entity, { page: index - 1, size: entityTablePages.size })"
+                                :text="index"
+                                :color="`${index == entityTablePages.number + 1 ? 'secondary' : 'primary'}`"
+                                :class="'mx-2'"
+                            >
+                                {{ index }}
+                            </base-button>
+                        </div>
+                    </td>
+                </tr>
             </tfoot>
         </table>
     </div>
@@ -111,7 +113,7 @@ export default class EntityTable extends Vue {
     async setTableData(entity, params?) {
         const data = await restService.getAll(this.entity, params)
         this.entityTablePages = data.page
-        this.entityList = data[`${this.entity}s`]
+        this.entityList = data[`${this.entity}`]
     }
 
     arrayToHtmlList(array) {

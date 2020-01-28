@@ -15,7 +15,7 @@
                     @focus="clearStatus"
                     @keypress="clearStatus"
                 />
-                <base-button class="w-full" :text="'Confirm'" :type="'submit'" />
+                <base-button class="w-full" :text="'Confirm'" :type="'submit'" :color="'secondary'"/>
             </form>
         </div>
     </div>

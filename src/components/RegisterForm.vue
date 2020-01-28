@@ -43,7 +43,7 @@
                     @focus="clearStatus"
                     @keypress="clearStatus"
                 />
-                <base-button class="w-full" :text="'SignUp'" :type="'submit'" />
+                <base-button class="w-full" :text="'SignUp'" :type="'submit'" :color="'secondary'" />
             </form>
         </div>
     </div>

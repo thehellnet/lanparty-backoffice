@@ -4,50 +4,54 @@ class RestService {
     constructor() {}
 
     getAll(entity: string, queryParams?: { page: string; size: string; sort: string }) {
-        return httpClient.get(`/rest/${entity}s${composeQueryParams(queryParams)}`).then(response => {
+        return httpClient.get(`/rest/${entity}${composeQueryParams(queryParams)}`).then(response => {
             return {
-                [`${entity}s`]: response.data._embedded[`${entity}s`],
+                [`${entity}`]: response.data._embedded[`${entity}`],
                 page: response.data.page,
             }
         })
     }
 
     get(entity: string, id: string | number) {
-        return httpClient.get(`/rest/${entity}s/${id}`)
+        return httpClient.get(`/rest/${entity}/${id}`)
+    }
+
+    getEntities() {
+        return httpClient.get(`/rest`).then(response => Object.keys(response.data._links || {}))
     }
 
     create(entity: string, data: any) {
-        return httpClient.post(`/rest/${entity}s`, data)
+        return httpClient.post(`/rest/${entity}`, data)
     }
 
     update(entity: string, id: string | number, data: any) {
-        return httpClient.put(`/rest/${entity}s/${id}`, data)
+        return httpClient.put(`/rest/${entity}/${id}`, data)
     }
 
     delete(entity: string, id: string | number) {
-        return httpClient.delete(`/rest/${entity}s/${id}`)
+        return httpClient.delete(`/rest/${entity}/${id}`)
     }
 
     entityProfile(entity: string) {
-        return httpClient.get(`/rest/profile/${entity}s`, { headers: { 'content-type': 'application/alps+json' } })
+        return httpClient.get(`/rest/profile/${entity}`, { headers: { 'content-type': 'application/alps+json' } })
     }
 
     entitySchema(entity: string): Promise<EntitySchemaProp> {
         return httpClient
-            .get(`/rest/profile/${entity}s`, { headers: { accept: 'application/schema+json' } })
+            .get(`/rest/profile/${entity}`, { headers: { accept: 'application/schema+json' } })
             .then(response => {
                 return response.data
             })
     }
 
     entityConfig(entity: string): Promise<EntitySchema> {
-        return httpClient.get(`/v1/config/metadata/${entity}s`).then(response => {
+        return httpClient.get(`/v1/config/metadata/${entity}`).then(response => {
             return response.data
         })
     }
 
     lazyLoad(entity, id, related) {
-        return httpClient.get(`/rest/${entity}s/${id}/${related}`)
+        return httpClient.get(`/rest/${entity}/${id}/${related}`)
     }
 
     restProfile() {
@@ -56,10 +60,10 @@ class RestService {
 }
 
 function composeQueryParams(params) {
-    return (!params || Object.entries(params).length === 0)
+    return !params || Object.entries(params).length === 0
         ? ``
         : `?${Object.entries(params)
-              .map(([key, val]) =>`${key}=${val}`)
+              .map(([key, val]) => `${key}=${val}`)
               .join('&')}`
 }
 const restService = new RestService()

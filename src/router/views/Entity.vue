@@ -1,7 +1,7 @@
 <template>
     <the-layout>
-        <entity-table :entity="entity" @edit:entity="editEntity"></entity-table>
-<!--        <entity-form :entity="entityToEdit"></entity-form>-->
+        <entity-table></entity-table>
+        <!--        <entity-form :entity="entityToEdit"></entity-form>-->
     </the-layout>
 </template>
 
