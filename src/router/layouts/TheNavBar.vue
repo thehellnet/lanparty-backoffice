@@ -58,7 +58,6 @@ const authModule = namespace('AuthModule')
 })
 export default class TheNavBar extends Vue {
     navLinks = [
-        { title: 'Edit', href: '/edit' },
         { title: 'About', href: '/about' },
         { title: 'Entity', href: '/entity/appUser' },
     ]
