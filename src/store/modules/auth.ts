@@ -40,18 +40,6 @@ class AuthModule extends VuexModule {
         tokenService.clearToken()
         return false
     }
-
-    @Action
-    async doConfirm(data) {
-        logger.log(data)
-
-        try {
-            await httpClient.post('/v1/auth/confirm', data, { auth: false })
-            return true
-        } catch (e) {
-            return false
-        }
-    }
 }
 
 export default AuthModule

@@ -29,6 +29,7 @@ import BaseInput from '@/components/Base/BaseInput.vue'
 import logger from '@/services/app-logger/app-logger.service'
 import { namespace } from 'vuex-class'
 import { MailUtility } from '@/utility/mail.utility'
+import authService from '@/services/auth/auth.service'
 
 const authModule = namespace('AuthModule')
 
@@ -64,19 +65,17 @@ export default class ConfirmForm extends Vue {
             return
         }
 
-        const data = {
-            email: this.email,
-            confirmCode: this.confirmCode,
-        }
-
-        this.doConfirm(data)
+        authService
+            .doConfirm(this.email, this.confirmToken)
             .then(() => {
                 alert('Activated')
             })
             .catch(error => {
                 logger.debug(error)
             })
-        this.submitting = false
+            .finally(() => {
+                this.submitting = false
+            })
     }
 
     clearStatus(): void {
