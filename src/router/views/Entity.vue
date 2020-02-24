@@ -1,6 +1,6 @@
 <template>
     <the-layout>
-        <entity-table></entity-table>
+        <entity-table :entity="entity"></entity-table>
         <!--        <entity-form :entity="entityToEdit"></entity-form>-->
     </the-layout>
 </template>
