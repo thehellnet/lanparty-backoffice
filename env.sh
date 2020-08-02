@@ -1,13 +1,13 @@
 #!/bin/bash
 
-NODE_HOME="/opt/node";
-PATH="./node_modules/.bin:${NODE_HOME}/bin:${PATH}";
+NODE_HOME="/opt/node"
+PATH="./node_modules/.bin:${NODE_HOME}/bin:${PATH}"
 
 export NODE_HOME
 export PATH
 
 if [ -f /lbin/env-sanitize ]; then
-    source /lbin/env-sanitize
+  source /lbin/env-sanitize
 fi
 
 PROMPT_TAG="LanParty Backoffice"
